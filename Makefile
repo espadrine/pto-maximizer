@@ -1,4 +1,4 @@
 all:
-	ruby main.rb
+	bundle && ruby main.rb
 
 .PHONY: all

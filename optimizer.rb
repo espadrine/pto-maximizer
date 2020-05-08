@@ -42,7 +42,7 @@ class HolidaySet
     @holidays.sum(&:length)
   end
   def to_s
-    @holidays.map { |h| h.to_s }.join("\n")
+    @holidays.sort_by(&:first_day).map(&:to_s).join("\n")
   end
 end
 
@@ -94,4 +94,22 @@ def longest_pto(start: Date.new(2020, 1, 1),
   end
 
   holidays
+end
+
+# Return the list of holidays to take
+# if you have `pto_count` days of PTO in the year.
+# It maximizes the number of holiday days.
+def max_holiday_days(start: Date.new(2020, 1, 1),
+                stop: Date.new(2021, 1, 1),
+                pto_count: 20,
+                min_holiday_size: 1)
+  best_holiday_set = nil
+  # The algorithmic complexity can very likely be reduced.
+  (pto_count*2).downto(min_holiday_size).each do |max|
+    holiday_set = longest_pto(start: start, stop: stop, pto_count: pto_count, max_holiday_size: max)
+    if best_holiday_set == nil || holiday_set.length > best_holiday_set.length
+      best_holiday_set = holiday_set
+    end
+  end
+  best_holiday_set
 end

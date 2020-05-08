@@ -1,17 +1,24 @@
+require 'time'
 require './optimizer'
 
-def main
-  holidays = longest_pto(
-    start: Date.new(2020, 1, 1),
-    stop: Date.new(2021, 1, 30),
-    pto_count: 45, # days
-    max_holiday_size: 30,
-  )
+longest_holidays = longest_pto(
+  start: Date.today,
+  stop: Date.today + 365,
+  pto_count: 35, # days
+  max_holiday_size: 20, # days
+)
 
-  puts holidays
-  puts "Number of PTO days spent: #{holidays.pto_days.size}."
-  puts "Number of holiday days: #{holidays.length}."
-  puts holidays.pto_days.map(&:to_s).join("\n")
-end
+max_holidays = max_holiday_days(
+  start: Date.today,
+  stop: Date.today + 365,
+  pto_count: 35, # days
+  min_holiday_size: 4, # days
+)
 
-main
+puts longest_holidays
+puts "Number of PTO days spent: #{longest_holidays.pto_days.size}."
+puts "Number of holiday days: #{longest_holidays.length}."
+puts max_holidays
+puts "Number of PTO days spent: #{max_holidays.pto_days.size}."
+puts "Number of holiday days: #{max_holidays.length}."
+# puts holidays.pto_days.sort.map(&:to_s).join("\n")
